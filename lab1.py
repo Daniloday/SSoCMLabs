@@ -3,7 +3,8 @@ from math import *
 
 class Convert:
 
-	b = int(pow(2,64))
+	def __init__(self, b):
+		self.b = b
 
 	def convert_symbol_to_dec(self, symbol):
 
@@ -84,26 +85,74 @@ class Convert:
 
 class Exercises:
 
-	def __init__(self,convert):
+	def __init__(self, convert, b):
 		self.convert = convert
+		self.b = b
 
 	def small_to_large(self):
 		num_hex = input('Print your number:\n')
 		num_b = self.convert.hex_to_b(num_hex)
-		print(self.convert.b_to_hex(num_b))
+		print(num_b)
+
+	def addition(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = []
+		num_b_1.reverse()
+		num_b_2.reverse()
+		carry = 0
+		for i in range(len(num_b_1)):
+			temp = num_b_1[i] + num_b_2[i] + carry
+			num_b_3.append(temp % self.b)
+			carry = temp // self.b
+		if carry != 0:
+			num_b_3.append(carry)
+		num_b_3.reverse()
+		num_hex_3 = self.convert.b_to_hex(num_b_3)
+		print(num_hex_3)
+		
+	def subtraction(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = []
+		num_b_1.reverse()
+		num_b_2.reverse()
+		borrow = 0
+		for i in range(len(num_b_1)):
+			temp = num_b_1[i] - num_b_2[i] - borrow
+			if temp >= 0:
+				num_b_3.append(temp)
+				borrow = 0
+			else:
+				num_b_3.append(temp + self.b)
+				borrow = 1
+		num_b_3.reverse()
+		num_hex_3 = self.convert.b_to_hex(num_b_3)
+		print(num_hex_3)
+
+
 
 
 		
 
 
 def main():
-	convert = Convert()
-	exercises = Exercises(convert)
+	b = int(pow(2,64))
+	convert = Convert(b)
+	exercises = Exercises(convert, b)
 	while True:
 		print("Choose option: ")
 		choose = input()
 		if choose == '1':
 			exercises.small_to_large()
+		if choose == '2':
+			exercises.addition()
+		if choose == '3':
+			exercises.subtraction()
 		if choose == 'n' or choose == 'N':
 			break
 	
