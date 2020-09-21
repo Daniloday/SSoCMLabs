@@ -94,26 +94,33 @@ class Exercises:
 		num_b = self.convert.hex_to_b(num_hex)
 		print(num_b)
 
-	def addition(self):
+	def add(self):
 		num_hex_1 = input('Print your first number:\n')
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.long_add(num_b_1, num_b_2)
+		num_hex_3 = self.convert.b_to_hex(num_b_3)
+		print(num_hex_3)
+
+	def long_add(self, num_b_1, num_b_2):
 		num_b_3 = []
 		num_b_1.reverse()
 		num_b_2.reverse()
 		carry = 0
 		for i in range(len(num_b_1)):
-			temp = num_b_1[i] + num_b_2[i] + carry
+			second = 0
+			if len(num_b_2) > i:
+				second = num_b_2[i]
+			temp = num_b_1[i] + second + carry
 			num_b_3.append(temp % self.b)
 			carry = temp // self.b
 		if carry != 0:
 			num_b_3.append(carry)
 		num_b_3.reverse()
-		num_hex_3 = self.convert.b_to_hex(num_b_3)
-		print(num_hex_3)
+		return num_b_3
 		
-	def subtraction(self):
+	def sub(self):
 		num_hex_1 = input('Print your first number:\n')
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
@@ -134,6 +141,43 @@ class Exercises:
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
+	def mul_one_digit(self, num_b, a):
+		num_b.reverse()
+		carry = 0
+		num_b_result = []
+		for i in range(len(num_b)):
+			temp = num_b[i] * a + carry
+			num_b_result.append(temp % self.b)
+			carry = temp // self.b
+		if carry != 0:
+			num_b_result.append(carry)
+		num_b_result.reverse()
+		return num_b_result
+
+	def shift(self, num, count):
+		for i in range(len(num)):
+			if i <= (len(num) - count-1):
+				num[i] = num[i + count]
+			else:
+				num[i] = 0
+		return num
+			
+	def mul(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = []
+		for i in range(len(num_b_2)):
+			temp = self.mul_one_digit(num_b_1, num_b_2[i])
+			self.shift(temp, i)
+			num_b_3 = self.long_add(temp, num_b_3)
+
+		num_hex_3 = self.convert.b_to_hex(num_b_3)
+		print(num_hex_3)
+
+	def test(self):
+		print(self.shift([1,2,3,4,5,6],0))
 
 
 
@@ -150,9 +194,13 @@ def main():
 		if choose == '1':
 			exercises.small_to_large()
 		if choose == '2':
-			exercises.addition()
+			exercises.add()
 		if choose == '3':
-			exercises.subtraction()
+			exercises.sub()
+		if choose == '4':
+			exercises.mul()
+		if choose == '5':
+			exercises.test()
 		if choose == 'n' or choose == 'N':
 			break
 	
