@@ -127,11 +127,11 @@ class Exercises:
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
-		num_b_3 = self.long_add(num_b_1, num_b_2)
+		num_b_3 = self.add_long(num_b_1, num_b_2, self.b)
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
-	def long_add(self, num_b_1, num_b_2):
+	def add_long(self, num_b_1, num_b_2, extent):
 		if len(num_b_2) > len(num_b_1):
 			x = num_b_1
 			num_b_1 = num_b_2
@@ -145,8 +145,8 @@ class Exercises:
 			if len(num_b_2) > i:
 				second = num_b_2[i]
 			temp = num_b_1[i] + second + carry
-			num_b_3.append(temp % self.b)
-			carry = temp // self.b
+			num_b_3.append(temp % extent)
+			carry = temp // extent
 		if carry != 0:
 			num_b_3.append(carry)
 		num_b_3.reverse()
@@ -188,14 +188,14 @@ class Exercises:
 				break
 		return num_b_3
 
-	def mul_one_digit(self, num_b, a):
+	def mul_one_digit(self, num_b, a, extent):
 		num_b.reverse()
 		carry = 0
 		num_b_result = []
 		for i in range(len(num_b)):
 			temp = num_b[i] * a + carry
-			num_b_result.append(temp % self.b)
-			carry = temp // self.b
+			num_b_result.append(temp % extent)
+			carry = temp // extent
 		if carry != 0:
 			num_b_result.append(carry)
 		num_b_result.reverse()
@@ -213,11 +213,11 @@ class Exercises:
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
-		num_b_3 = self.mul_long(num_b_1, num_b_2)
+		num_b_3 = self.mul_long(num_b_1, num_b_2, self.b)
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
-	def mul_long(self, num_b_1, num_b_2):
+	def mul_long(self, num_b_1, num_b_2 , extent):
 		if len(num_b_2) > len(num_b_1):
 			x = num_b_1
 			num_b_1 = num_b_2
@@ -225,16 +225,16 @@ class Exercises:
 		num_b_3 = []
 		num_b_2.reverse()
 		for i in range(len(num_b_2)):
-			temp = self.mul_one_digit(num_b_1, num_b_2[i])
+			temp = self.mul_one_digit(num_b_1, num_b_2[i], extent)
 			temp = self.shift(temp, i)
-			num_b_3 = self.long_add(temp, num_b_3)
+			num_b_3 = self.add_long(temp, num_b_3,extent)
 		return num_b_3
 	
 	def sqr(self):
 		num_hex_1 = input('Print your number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = num_b_1.copy()
-		num_b_3 = self.mul_long(num_b_1, num_b_2)
+		num_b_3 = self.mul_long(num_b_1, num_b_2, self.b)
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
@@ -278,26 +278,38 @@ class Exercises:
 
 	def div_long(self, num_bin_1, num_bin_2):
 		k = len(num_bin_2)
-		print(k)
 		R = num_bin_1
-		print(R)
 		Q = []
 		while self.cmp_long(R,num_bin_2):
-			print(self.cmp_long(R,num_bin_2))
 			t = len(R)
-			print(t)
 			C = self.shift(num_bin_2, t-k)
-			print(C)
 			if not (self.cmp_long(R,C)):
-				print("tut")
 				t -= 1
 				C = self.shift(num_bin_2, t-k)
-				print(C)
 			R = self.sub_long(R, C, 2)
-			print(R)
 			Q = self.insert(Q, t-k)
-			print(Q)
 		return (Q,R)
+
+	def power(self):
+		num_hex_1 = input('Print your first(A) number:\n')
+		num_hex_2 = input('Print your second(N) number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_bin_1 = self.convert.b_to_bin(num_b_1)
+		num_bin_2 = self.convert.b_to_bin(num_b_2)
+		num_bin_3 = self.power_long(num_bin_1, num_bin_2)
+		num_hex_3 = self.convert.bin_to_hex(num_bin_3)
+		print(num_hex_3)
+
+	def power_long(self, num_bin_1, num_bin_2):
+		num_bin_3 = [1]
+		num_bin_2.reverse()
+		for symbol in num_bin_2:
+			print("1")
+			if symbol == 1:
+				num_bin_3 = self.mul_long(num_bin_3, num_bin_1, 2)
+			num_bin_1 = self.mul_long(num_bin_1.copy(), num_bin_1, 2)
+		return num_bin_3
 
 	def test(self):
 		num_hex_1 = input('Print your first number:\n')
@@ -314,7 +326,7 @@ def main():
 	convert = Convert(b)
 	exercises = Exercises(convert, b)
 	while True:
-		print("Choose option:\n1. Small to large \n2. Add \n3. Sub \n4. Mul \n5. Sqr \n6. Div \nN/n to quit" )
+		print("Choose option:\n1. Small to large \n2. Add \n3. Sub \n4. Mul \n5. Sqr \n6. Div \n7. Power \nN/n to quit" )
 		choose = input()
 		if choose == '1':
 			exercises.small_to_large()
@@ -329,6 +341,8 @@ def main():
 		if choose == '6':
 			exercises.div()
 		if choose == '7':
+			exercises.power()
+		if choose == '8':
 			exercises.test()
 		if choose == 'n' or choose == 'N':
 			break
