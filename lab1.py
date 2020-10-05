@@ -1,4 +1,4 @@
-
+import math
 
 
 class Convert:
@@ -70,6 +70,9 @@ class Convert:
 
 	def b_to_hex(self, num_b):
 		num_dec = self.b_to_dec(num_b)
+		return self.dec_to_hex(num_dec)
+
+	def dec_to_hex(self, num_dec):
 		num_hex = ''
 		while(True):
 			num_hex += self.convert_dec_to_symbol((num_dec % 16))
@@ -78,6 +81,31 @@ class Convert:
 				break
 		num_hex = num_hex[::-1]
 		return num_hex
+
+	def b_to_bin(self, num_b):
+		num_bin = []
+		for order in num_b:
+			temp = []
+			for i in range(int(math.log2(self.b))):
+				temp.append((order % 2))
+				order //= 2
+			temp.reverse()
+			num_bin += temp
+		while(len(num_bin) != 0):
+			if num_bin[0] == 0:
+				del num_bin[0]
+			else:
+				break
+		return num_bin
+
+	def bin_to_hex(self, num_bin):
+		num_bin.reverse()
+		num_dec = 0
+		order = 0
+		for symbol in num_bin:
+			num_dec += symbol * int(2 ** order)
+			order += 1
+		return self.dec_to_hex(num_dec)
 
 
 
@@ -132,11 +160,11 @@ class Exercises:
 		if not self.cmp_long(num_b_1, num_b_2):
 			print('Negative number')
 			return
-		num_b_3 = self.sub_long(num_b_1, num_b_2)
+		num_b_3 = self.sub_long(num_b_1, num_b_2, self.b)
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
-	def sub_long(self, num_b_1, num_b_2):
+	def sub_long(self, num_b_1, num_b_2, extent):
 		num_b_3 = []
 		num_b_1.reverse()
 		num_b_2.reverse()
@@ -150,9 +178,14 @@ class Exercises:
 				num_b_3.append(temp)
 				borrow = 0
 			else:
-				num_b_3.append(temp + self.b)
+				num_b_3.append(temp + extent)
 				borrow = 1
 		num_b_3.reverse()
+		while(len(num_b_3) != 0):
+			if num_b_3[0] == 0:
+				del num_b_3[0]
+			else:
+				break
 		return num_b_3
 
 	def mul_one_digit(self, num_b, a):
@@ -170,9 +203,10 @@ class Exercises:
 		return num_b_result
 
 	def shift(self, num, count):
+		new_num = num.copy()
 		for i in range(count):
-			num.append(0)
-		return num
+			new_num.append(0)
+		return new_num
 			
 	def mul(self):
 		num_hex_1 = input('Print your first number:\n')
@@ -217,47 +251,66 @@ class Exercises:
 					return False
 			return True #equal
 
+	def insert(self, num_bin, position):
+		if len(num_bin) <= position:
+			num_bin.append(1)
+			num_bin = self.shift(num_bin, position)
+		else:
+			num_bin.reverse()
+			num_bin[position] = 1
+			num_bin.reverse()
+		return num_bin
+
 	def div(self):
 		num_hex_1 = input('Print your first number:\n')
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
-		num_b_3 = self.div_long(num_b_1, num_b_2)[0]
-		num_hex_3 = self.convert.b_to_hex(num_b_3)
+		num_bin_1 = self.convert.b_to_bin(num_b_1)
+		num_bin_2 = self.convert.b_to_bin(num_b_2)
+		div = self.div_long(num_bin_1, num_bin_2)
+		num_bin_3 = div[0]
+		num_bin_4 = div[1]
+		num_hex_3 = self.convert.bin_to_hex(num_bin_3)
+		num_hex_4 = self.convert.bin_to_hex(num_bin_4)
 		print(num_hex_3)
+		print(num_hex_4)
 
-	def div_long(self, num_b_1, num_b_2):
-		k = len(num_b_2)
-		R = num_b_1
+	def div_long(self, num_bin_1, num_bin_2):
+		k = len(num_bin_2)
+		print(k)
+		R = num_bin_1
+		print(R)
 		Q = []
-		while self.cmp_long(R,Q):
+		while self.cmp_long(R,num_bin_2):
+			print(self.cmp_long(R,num_bin_2))
 			t = len(R)
-			C = self.shift(num_b_2, t-k)
+			print(t)
+			C = self.shift(num_bin_2, t-k)
+			print(C)
 			if not (self.cmp_long(R,C)):
+				print("tut")
 				t -= 1
-				C = self.shift(num_b_2, t-k)
-			R = self.sub_long(R,C)
-			Q.append(t-k)
-		return (Q, R)
+				C = self.shift(num_bin_2, t-k)
+				print(C)
+			R = self.sub_long(R, C, 2)
+			print(R)
+			Q = self.insert(Q, t-k)
+			print(Q)
+		return (Q,R)
 
 	def test(self):
-		a = 100
-		b = 35
-		a_b = self.convert.dec_to_b(a)
-		b_b = self.convert.dec_to_b(b)
-		print(a_b)
-		print(b_b)
-		print("___________________")
-		c_b = self.mul_long(a_b, b_b)
-		print("___________________")
-		print(c_b)
-		c = self.convert.b_to_dec(c_b)
-		print(c)
+		num_hex_1 = input('Print your first number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		print(num_b_1)
+		a = self.convert.b_to_bin(num_b_1)
+		print(a)
+		
 		
 
 
 def main():
-	b = 2 ** 64
+	b = int(2 ** 64)
 	convert = Convert(b)
 	exercises = Exercises(convert, b)
 	while True:
