@@ -1,4 +1,5 @@
 import math
+import time
 
 
 class Convert:
@@ -127,7 +128,10 @@ class Exercises:
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		time_start = time.time()
 		num_b_3 = self.add_long(num_b_1, num_b_2, self.b)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
@@ -160,7 +164,10 @@ class Exercises:
 		if not self.cmp_long(num_b_1, num_b_2):
 			print('Negative number')
 			return
+		time_start = time.time()
 		num_b_3 = self.sub_long(num_b_1, num_b_2, self.b)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
@@ -213,7 +220,10 @@ class Exercises:
 		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		time_start = time.time()
 		num_b_3 = self.mul_long(num_b_1, num_b_2, self.b)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
 		num_hex_3 = self.convert.b_to_hex(num_b_3)
 		print(num_hex_3)
 
@@ -268,7 +278,10 @@ class Exercises:
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
 		num_bin_1 = self.convert.b_to_bin(num_b_1)
 		num_bin_2 = self.convert.b_to_bin(num_b_2)
+		time_start = time.time()
 		div = self.div_long(num_bin_1, num_bin_2)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
 		num_bin_3 = div[0]
 		num_bin_4 = div[1]
 		num_hex_3 = self.convert.bin_to_hex(num_bin_3)
@@ -291,13 +304,16 @@ class Exercises:
 		return (Q,R)
 
 	def power(self):
-		num_hex_1 = input('Print your first(A) number:\n')
-		num_hex_2 = input('Print your second(N) number:\n')
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
 		num_bin_1 = self.convert.b_to_bin(num_b_1)
 		num_bin_2 = self.convert.b_to_bin(num_b_2)
+		time_start = time.time()
 		num_bin_3 = self.power_long(num_bin_1, num_bin_2)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
 		num_hex_3 = self.convert.bin_to_hex(num_bin_3)
 		print(num_hex_3)
 
@@ -311,12 +327,48 @@ class Exercises:
 			num_bin_1 = self.mul_long(num_bin_1.copy(), num_bin_1, 2)
 		return num_bin_3
 
-	def test(self):
+	def test1(self):
 		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your third number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
-		print(num_b_1)
-		a = self.convert.b_to_bin(num_b_1)
-		print(a)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.convert.hex_to_b(num_hex_3)
+
+		num_b_12sum = self.add_long(num_b_1, num_b_2, self.b)
+		num_b_12sum3 = self.mul_long(num_b_12sum, num_b_3, self.b)
+
+		num_b_312sum = self.mul_long(num_b_3, num_b_12sum, self.b)
+
+		num_b_13 = self.mul_long(num_b_1, num_b_3, self.b)
+		num_b_23 = self.mul_long(num_b_2, num_b_3, self.b)
+		num_b_sum123 = self.add_long(num_b_13, num_b_23, self.b)
+
+		num_hex_12sum3 = self.convert.b_to_hex(num_b_12sum3)
+		num_hex_312sum = self.convert.b_to_hex(num_b_312sum)
+		num_hex_sum123 = self.convert.b_to_hex(num_b_sum123)
+		print(num_hex_12sum3)
+		print(num_hex_312sum)
+		print(num_hex_sum123)
+		if (num_hex_12sum3 == num_hex_312sum and num_hex_312sum == num_hex_sum123):
+			print("OK!")
+
+	def test2(self):
+		num_hex_1 = input('Print your first(N) number:\n')
+		num_hex_2 = input('Print your second(A) number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_na = self.mul_long(num_b_1, num_b_2, self.b)
+		num_dec_1 = self.convert.hex_to_dec(num_hex_1)
+		num_b_sum = []
+		for i in range(num_dec_1):
+			num_b_sum = self.add_long(num_b_sum, num_b_2, self.b)
+		num_hex_na = self.convert.b_to_hex(num_b_na)
+		num_hex_sum = self.convert.b_to_hex(num_b_sum)
+		print(num_hex_na)
+		print(num_hex_sum)
+		if (num_hex_na == num_hex_sum):
+			print("OK!")
 		
 		
 
@@ -326,7 +378,7 @@ def main():
 	convert = Convert(b)
 	exercises = Exercises(convert, b)
 	while True:
-		print("Choose option:\n1. Small to large \n2. Add \n3. Sub \n4. Mul \n5. Sqr \n6. Div \n7. Power \nN/n to quit" )
+		print("Choose option:\n1. Small to large \n2. Add \n3. Sub \n4. Mul \n5. Sqr \n6. Div \n7. Power\n8. Test1\n9. Test2 \nN/n to quit" )
 		choose = input()
 		if choose == '1':
 			exercises.small_to_large()
@@ -343,7 +395,9 @@ def main():
 		if choose == '7':
 			exercises.power()
 		if choose == '8':
-			exercises.test()
+			exercises.test1()
+		if choose == '9':
+			exercises.test2()
 		if choose == 'n' or choose == 'N':
 			break
 	
