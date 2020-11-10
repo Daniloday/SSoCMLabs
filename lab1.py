@@ -189,7 +189,7 @@ class Lab1:
 				C = self.shift(num_bin_2, t-k)
 			R = self.sub_long(R, C, 2)
 			Q = self.insert(Q, t-k)
-		return (Q,R)
+		return [Q,R]
 
 	def power(self):
 		num_hex_1 = input('Print your first number:\n')

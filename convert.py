@@ -1,5 +1,4 @@
-
-
+import math
 class Convert:
 
 	def __init__(self, b):
@@ -105,3 +104,7 @@ class Convert:
 			num_dec += symbol * int(2 ** order)
 			order += 1
 		return self.dec_to_hex(num_dec)
+
+	def bin_to_b(self,num_bin):
+		num_hex = self.bin_to_hex(num_bin)
+		return self.hex_to_b(num_hex)
