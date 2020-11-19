@@ -220,7 +220,7 @@ class Lab2:
 		num_b_13 = self.convert.bin_to_b(num_bin_13)
 		num_b_23 = self.convert.bin_to_b(num_bin_23)
 		num_bin_sum123 = self.add_long(num_b_13.copy(), num_b_23.copy(), num_bin_mod.copy())
-		
+
 		num_hex_12sum3 = self.convert.bin_to_hex(num_bin_12sum3)
 		num_hex_312sum = self.convert.bin_to_hex(num_bin_312sum)
 		num_hex_sum123 = self.convert.bin_to_hex(num_bin_sum123)
@@ -232,17 +232,24 @@ class Lab2:
 	def test2(self):
 		num_hex_1 = input('Print your first(N) number:\n')
 		num_hex_2 = input('Print your second(A) number:\n')
+		num_hex_mod = input('Print your mod number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
 		num_b_2 = self.convert.hex_to_b(num_hex_2)
-		num_b_na = self.mul_long(num_b_1, num_b_2, self.b)
+		num_bin_mod = self.convert.hex_to_bin(num_hex_mod)
+
+		num_bin_na = self.mul_long(num_b_1.copy(), num_b_2.copy(), num_bin_mod)
+
 		num_dec_1 = self.convert.hex_to_dec(num_hex_1)
 		num_b_sum = []
 		for i in range(num_dec_1):
-			num_b_sum = self.add_long(num_b_sum, num_b_2, self.b)
-		num_hex_na = self.convert.b_to_hex(num_b_na)
-		num_hex_sum = self.convert.b_to_hex(num_b_sum)
+			num_bin_sum = self.add_long(num_b_sum.copy(), num_b_2.copy(), num_bin_mod.copy())
+			num_b_sum = self.convert.bin_to_b(num_bin_sum.copy())
+		num_hex_na = self.convert.bin_to_hex(num_bin_na)
+		num_hex_sum = self.convert.bin_to_hex(num_bin_sum)
 		print(num_hex_na)
 		print(num_hex_sum)
 		if (num_hex_na == num_hex_sum):
 			print("OK!")
+		else:
+			print("No!")
 		
