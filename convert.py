@@ -108,3 +108,12 @@ class Convert:
 	def bin_to_b(self,num_bin):
 		num_hex = self.bin_to_hex(num_bin)
 		return self.hex_to_b(num_hex)
+
+	def dec_to_bin(self, num_dec):
+		num_hex = self.dec_to_hex(num_dec)
+		num_b =  self.hex_to_b( num_hex)
+		return self.b_to_bin(num_b)
+
+	def hex_to_bin(self, num_hex):
+		num_b = self.hex_to_b(num_hex)
+		return self.b_to_bin(num_b)

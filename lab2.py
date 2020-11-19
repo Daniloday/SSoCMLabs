@@ -72,4 +72,107 @@ class Lab2:
 		print("Time: " + str(time_end - time_start))
 		print(num_hex_3)
 
+	def add(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your mod number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.convert.hex_to_b(num_hex_3)
+		num_bin_3 = self.convert.b_to_bin(num_b_3)
+		time_start = time.time()
+		num_b_4 = self.lab1.add_long(num_b_1, num_b_2, self.b)
+		num_bin_4 = self.convert.b_to_bin(num_b_4)
+		m = 2 ** len(num_bin_4)
+		m1 = self.convert.dec_to_bin(m)
+		m = self.lab1.div_long(m1,num_bin_3)[0]
+		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def sub(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your mod number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.convert.hex_to_b(num_hex_3)
+		num_bin_3 = self.convert.b_to_bin(num_b_3)
+		time_start = time.time()
+		num_b_4 = self.lab1.sub_long(num_b_1, num_b_2, self.b)
+		num_bin_4 = self.convert.b_to_bin(num_b_4)
+		m = 2 ** len(num_bin_4)
+		m1 = self.convert.dec_to_bin(m)
+		m = self.lab1.div_long(m1,num_bin_3)[0]
+		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def mul(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your mod number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.convert.hex_to_b(num_hex_3)
+		num_bin_3 = self.convert.b_to_bin(num_b_3)
+		time_start = time.time()
+		num_b_4 = self.lab1.mul_long(num_b_1, num_b_2, self.b)
+		num_bin_4 = self.convert.b_to_bin(num_b_4)
+		m = 2 ** len(num_bin_4)
+		m1 = self.convert.dec_to_bin(m)
+		m = self.lab1.div_long(m1,num_bin_3)[0]
+		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def barrettReduction(self, x, n, m):
+		return self.lab1.div_long(x,n)[1]
+		q = self.killLastDigits(x.copy(), len(n) - 1)
+		q = self.lab1.mul_long(q, m, 2)
+		q = self.killLastDigits(x.copy(), len(n) + 1)
+		r = self.lab1.sub_long(x.copy(),self.lab1.mul_long(q.copy(),n.copy(),2), 2)
+		while self.lab1.cmp_long(r,n):
+			r = self.lab1.sub_long(r.copy(), n, 2)
+		return r
+
+	def killLastDigits(self, x , k):
+		if k > len(x):
+			return x
+		for i in range(k):
+			del x[-i+1]
+		return x
+
+	def power(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your mod number:\n')
+		num_bin_1 = self.convert.hex_to_bin(num_hex_1)
+		num_bin_2 = self.convert.hex_to_bin(num_hex_2)
+		num_bin_3 = self.convert.hex_to_bin(num_hex_3)
+		time_start = time.time()
+		num_bin_4 = self.gorner(num_bin_1, num_bin_2, num_bin_3)
+		num_hex_4 = self.convert.bin_to_hex(num_bin_4)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_4)
+
+	def gorner(self, A, B, n):
+		C = [1]
+		m = 2 ** (len(n)*2)
+		m1 = self.convert.dec_to_bin(m)
+		m = self.lab1.div_long(m1,n)[0]
+		B.reverse()
+		for i in range(len(B)):
+			if B[i] == 1:
+				C = self.barrettReduction(self.lab1.mul_long(C.copy(),A.copy(),2), n, m)
+			A = self.barrettReduction(self.lab1.mul_long(A.copy(),A.copy(),2), n, m)
+		return C
+
 		
