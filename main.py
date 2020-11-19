@@ -45,10 +45,10 @@ def main():
             lab2.sqr()
         if choose == '7':
             lab2.power()
-        # if choose == '8':
-        #     lab1.test1()
-        # if choose == '9':
-        #     lab1.test2()
+        if choose == '8':
+            lab2.test1()
+        if choose == '9':
+            lab2.test2()
         if choose == 'n' or choose == 'N':
             break
 

@@ -81,16 +81,20 @@ class Lab2:
 		num_b_3 = self.convert.hex_to_b(num_hex_3)
 		num_bin_3 = self.convert.b_to_bin(num_b_3)
 		time_start = time.time()
+		num_bin_5 = self.add_long(num_b_1,num_b_2,num_bin_3)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def add_long(self,num_b_1, num_b_2, num_bin_3):
 		num_b_4 = self.lab1.add_long(num_b_1, num_b_2, self.b)
 		num_bin_4 = self.convert.b_to_bin(num_b_4)
 		m = 2 ** len(num_bin_4)
 		m1 = self.convert.dec_to_bin(m)
 		m = self.lab1.div_long(m1,num_bin_3)[0]
 		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
-		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
-		time_end = time.time()
-		print("Time: " + str(time_end - time_start))
-		print(num_hex_5)
+		return num_bin_5
 
 	def sub(self):
 		num_hex_1 = input('Print your first number:\n')
@@ -101,16 +105,20 @@ class Lab2:
 		num_b_3 = self.convert.hex_to_b(num_hex_3)
 		num_bin_3 = self.convert.b_to_bin(num_b_3)
 		time_start = time.time()
+		num_bin_5 = self.sub_long(num_b_1,num_b_2,num_bin_3)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def sub_long(self,num_b_1, num_b_2, num_bin_3):
 		num_b_4 = self.lab1.sub_long(num_b_1, num_b_2, self.b)
 		num_bin_4 = self.convert.b_to_bin(num_b_4)
 		m = 2 ** len(num_bin_4)
 		m1 = self.convert.dec_to_bin(m)
 		m = self.lab1.div_long(m1,num_bin_3)[0]
 		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
-		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
-		time_end = time.time()
-		print("Time: " + str(time_end - time_start))
-		print(num_hex_5)
+		return num_bin_5
 
 	def mul(self):
 		num_hex_1 = input('Print your first number:\n')
@@ -121,16 +129,20 @@ class Lab2:
 		num_b_3 = self.convert.hex_to_b(num_hex_3)
 		num_bin_3 = self.convert.b_to_bin(num_b_3)
 		time_start = time.time()
+		num_bin_5 = self.mul_long(num_b_1, num_b_2, num_bin_3)
+		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_5)
+
+	def mul_long(self,num_b_1, num_b_2, num_bin_3):
 		num_b_4 = self.lab1.mul_long(num_b_1, num_b_2, self.b)
 		num_bin_4 = self.convert.b_to_bin(num_b_4)
 		m = 2 ** len(num_bin_4)
 		m1 = self.convert.dec_to_bin(m)
 		m = self.lab1.div_long(m1,num_bin_3)[0]
 		num_bin_5 = self.barrettReduction(num_bin_4, num_bin_3,m)
-		num_hex_5 = self.convert.bin_to_hex(num_bin_5)
-		time_end = time.time()
-		print("Time: " + str(time_end - time_start))
-		print(num_hex_5)
+		return num_bin_5
 
 	def barrettReduction(self, x, n, m):
 		return self.lab1.div_long(x,n)[1]
@@ -163,6 +175,18 @@ class Lab2:
 		print("Time: " + str(time_end - time_start))
 		print(num_hex_4)
 
+	def sqr(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_3 = input('Print your mod number:\n')
+		num_bin_1 = self.convert.hex_to_bin(num_hex_1)
+		num_bin_3 = self.convert.hex_to_bin(num_hex_3)
+		time_start = time.time()
+		num_bin_4 = self.gorner(num_bin_1, [1,0], num_bin_3)
+		num_hex_4 = self.convert.bin_to_hex(num_bin_4)
+		time_end = time.time()
+		print("Time: " + str(time_end - time_start))
+		print(num_hex_4)
+
 	def gorner(self, A, B, n):
 		C = [1]
 		m = 2 ** (len(n)*2)
@@ -175,4 +199,50 @@ class Lab2:
 			A = self.barrettReduction(self.lab1.mul_long(A.copy(),A.copy(),2), n, m)
 		return C
 
+	def test1(self):
+		num_hex_1 = input('Print your first number:\n')
+		num_hex_2 = input('Print your second number:\n')
+		num_hex_3 = input('Print your third number:\n')
+		num_hex_mod = input('Print your mod number:\n')
+
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_3 = self.convert.hex_to_b(num_hex_3)
+		num_bin_mod = self.convert.hex_to_bin(num_hex_mod)
+
+		num_bin_12sum = self.add_long(num_b_1.copy(), num_b_2.copy(), num_bin_mod.copy())
+		num_b_12sum = self.convert.bin_to_b(num_bin_12sum.copy())
+		num_bin_12sum3 = self.mul_long(num_b_12sum.copy(), num_b_3.copy(), num_bin_mod.copy())
+		num_bin_312sum = self.mul_long(num_b_3.copy(), num_b_12sum.copy(), num_bin_mod.copy())
+
+		num_bin_13 = self.mul_long(num_b_1.copy(), num_b_3.copy(), num_bin_mod.copy())
+		num_bin_23 = self.mul_long(num_b_2.copy(), num_b_3.copy(), num_bin_mod.copy())
+		num_b_13 = self.convert.bin_to_b(num_bin_13)
+		num_b_23 = self.convert.bin_to_b(num_bin_23)
+		num_bin_sum123 = self.add_long(num_b_13.copy(), num_b_23.copy(), num_bin_mod.copy())
+		
+		num_hex_12sum3 = self.convert.bin_to_hex(num_bin_12sum3)
+		num_hex_312sum = self.convert.bin_to_hex(num_bin_312sum)
+		num_hex_sum123 = self.convert.bin_to_hex(num_bin_sum123)
+		if (num_hex_12sum3 == num_hex_312sum and num_hex_312sum == num_hex_sum123):
+			print("OK!")
+		else:
+			print("NO!")
+
+	def test2(self):
+		num_hex_1 = input('Print your first(N) number:\n')
+		num_hex_2 = input('Print your second(A) number:\n')
+		num_b_1 = self.convert.hex_to_b(num_hex_1)
+		num_b_2 = self.convert.hex_to_b(num_hex_2)
+		num_b_na = self.mul_long(num_b_1, num_b_2, self.b)
+		num_dec_1 = self.convert.hex_to_dec(num_hex_1)
+		num_b_sum = []
+		for i in range(num_dec_1):
+			num_b_sum = self.add_long(num_b_sum, num_b_2, self.b)
+		num_hex_na = self.convert.b_to_hex(num_b_na)
+		num_hex_sum = self.convert.b_to_hex(num_b_sum)
+		print(num_hex_na)
+		print(num_hex_sum)
+		if (num_hex_na == num_hex_sum):
+			print("OK!")
 		
