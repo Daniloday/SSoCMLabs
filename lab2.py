@@ -145,17 +145,17 @@ class Lab2:
 		return num_bin_5
 
 	def barrettReduction(self, x, n, m):
-		return self.lab1.div_long(x,n)[1]
 		q = self.killLastDigits(x.copy(), len(n) - 1)
 		q = self.lab1.mul_long(q, m, 2)
 		q = self.killLastDigits(x.copy(), len(n) + 1)
 		r = self.lab1.sub_long(x.copy(),self.lab1.mul_long(q.copy(),n.copy(),2), 2)
-		while self.lab1.cmp_long(r,n):
-			r = self.lab1.sub_long(r.copy(), n, 2)
-		return r
+		return self.lab1.div_long(x,n)[1]
+		# while self.lab1.cmp_long(r,n):
+		# 	r = self.lab1.sub_long(r.copy(), n, 2)
+		# return r
 
 	def killLastDigits(self, x , k):
-		if k > len(x):
+		if x != None:
 			return x
 		for i in range(k):
 			del x[-i+1]
