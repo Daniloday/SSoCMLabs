@@ -150,9 +150,7 @@ class Lab2:
 		q = self.killLastDigits(x.copy(), len(n) + 1)
 		r = self.lab1.sub_long(x.copy(),self.lab1.mul_long(q.copy(),n.copy(),2), 2)
 		return self.lab1.div_long(x,n)[1]
-		# while self.lab1.cmp_long(r,n):
-		# 	r = self.lab1.sub_long(r.copy(), n, 2)
-		# return r
+		
 
 	def killLastDigits(self, x , k):
 		if x != None:
