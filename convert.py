@@ -117,3 +117,19 @@ class Convert:
 	def hex_to_bin(self, num_hex):
 		num_b = self.hex_to_b(num_hex)
 		return self.b_to_bin(num_b)
+
+	def str_to_bin(self, num_str):
+		num_bin = []
+		for symbol in num_str:
+			num_bin.append(int(symbol))
+		return num_bin
+
+	def bin_to_str(self, num_bin):
+		num_str = ""
+		for bit in num_bin:
+			num_str += str(bit)
+		return num_str
+
+	def bin_to_dec(self, num_bin):
+		num_hex = self.bin_to_hex(num_bin)
+		return self.hex_to_dec(num_hex)

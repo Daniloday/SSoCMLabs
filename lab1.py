@@ -127,7 +127,7 @@ class Lab1:
 			temp = self.shift(temp, i)
 			num_b_3 = self.add_long(temp, num_b_3,extent)
 		return num_b_3
-	
+		
 	def sqr(self):
 		num_hex_1 = input('Print your number:\n')
 		num_b_1 = self.convert.hex_to_b(num_hex_1)
@@ -137,6 +137,16 @@ class Lab1:
 		print(num_hex_3)
 
 	def cmp_long(self, num_b_1, num_b_2):
+		while(len(num_b_1) != 0):
+			if num_b_1[0] == 0:
+				del num_b_1[0]
+			else:
+				break
+		while(len(num_b_2) != 0):
+			if num_b_2[0] == 0:
+				del num_b_2[0]
+			else:
+				break
 		if len(num_b_1) > len(num_b_2):
 			return True
 		elif len(num_b_1) < len(num_b_2):
