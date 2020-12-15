@@ -3,7 +3,7 @@ from lab1 import *
 from convert import *
 
 
-class Lab3:
+class Lab4:
 
     def __init__(self):
         self.m = 179
@@ -77,10 +77,9 @@ class Lab3:
         return b_str
     
     def sqr_long(self,a):
-        for i in range(len(a)-1):
-            a.insert(i*2+1,0)
-        b = self.div_long(a.copy(), self.p)[1]
-        return b
+        a.insert(0,a[len(a) - 1])
+        del a[len(a) - 1]
+        return a
 
     def power(self,a_str,n_str):
         n = self.convert.str_to_bin(n_str)
@@ -176,29 +175,27 @@ class Lab3:
         pw = self.power(a,n_str)
         return pw
 
-
-
 def main():
-    lab3 = Lab3()
+    lab4 = Lab4()
     a = input("A:\n")
     b = input("B:\n")
     n = input("N:\n")
     print("A + B:")
-    print(lab3.add(a,b))
-    print("A * B:")
-    print(lab3.mul(a,b))
+    print(lab4.add(a,b))
+    # print("A * B:")
+    # print(lab3.mul(a,b))
     print("A ^ 2:")
-    print(lab3.sqr(a))
-    print("A ^ (-1):")
-    print(lab3.inverted(a))
-    print("A ^ N:")
-    print(lab3.power(a,n))
+    print(lab4.sqr(a))
+    # print("A ^ (-1):")
+    # print(lab4.inverted(a))
+    # print("A ^ N:")
+    # print(lab3.power(a,n))
     print("Trace A:")
-    print(lab3.trace(a))
-    print("Test 1:")
-    print(lab3.test1(a,b,n))
-    print("Test 2:")
-    print(lab3.test2(a))
+    print(lab4.trace(a))
+    # print("Test 1:")
+    # print(lab3.test1(a,b,n))
+    # print("Test 2:")
+    # print(lab3.test2(a))
 
 if __name__ == '__main__':
     main()
