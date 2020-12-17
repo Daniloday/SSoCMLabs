@@ -1,2 +1,2 @@
-# Vladyka_FI83_lab1
+# Vladyka FI83 
 SROM
