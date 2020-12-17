@@ -138,28 +138,27 @@ class Lab4:
     
     def inverted(self,a_str):
         a = self.convert.str_to_bin(a_str)
+        time_start = time.time()
         m = len(a)
-        # n = m - 1
-        n = 2**m - 2
+        n = m - 1
         n_bin = self.convert.dec_to_bin(n)
-        pw = self.power_long(a,n_bin)
-        # k = 1
-        # b = a.copy()
-        # for i in range(len(n_bin)):
-        #     if i == 0:
-        #         continue
-        #     c = self.sqr_long(b.copy())
-        #     c = self.power_long(b.copy(),self.convert.dec_to_bin(2*k))
-        #     # print(k)
-        #     b = self.mul_long(c.copy(),b.copy())
-        #     k *= 2
-        #     if n_bin[i] == 1:
-        #         b = self.sqr_long(b.copy())
-        #         b = self.mul_long(b.copy(),a.copy())
-        #         k += 1
-        # b = self.sqr_long(b.copy())
-        # return self.convert.bin_to_str(b)
-        return self.convert.bin_to_str(pw)
+        k = 1
+        b = a.copy()
+        for i in range(len(n_bin)):
+            if i == 0:
+                continue
+            c = self.sqr_long(b.copy())
+            c = self.power_long(b.copy(),self.convert.dec_to_bin(2**k))
+            b = self.mul_long(c.copy(),b.copy())
+            k = 2*k
+            if n_bin[i] == 1:
+                b = self.sqr_long(b.copy())
+                b = self.mul_long(b.copy(),a.copy())
+                k += 1
+        b = self.sqr_long(b.copy())
+        time_end = time.time()
+        print("Time: " + str(time_end - time_start))
+        return self.convert.bin_to_str(b)
 
     def trace(self,a_str):
         a = self.convert.str_to_bin(a_str)

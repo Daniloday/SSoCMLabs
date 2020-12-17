@@ -174,7 +174,10 @@ class Lab3:
         n_bin = self.convert.dec_to_bin(n)
         n_str = self.convert.bin_to_str(n_bin)
         pw = self.power(a,n_str)
-        return pw
+        if pw == 1:
+            return "NO!"
+        else:
+            return "OK!"
 
 
 
@@ -199,6 +202,7 @@ def main():
     print(lab3.test1(a,b,n))
     print("Test 2:")
     print(lab3.test2(a))
+    
 
 if __name__ == '__main__':
     main()
