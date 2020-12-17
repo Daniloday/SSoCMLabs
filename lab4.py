@@ -6,12 +6,7 @@ from convert import *
 class Lab4:
 
     def __init__(self):
-        self.m = 179
-        self.p_str = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010111"
-        # self.m = 3
-        # self.p_str = "1011"
         self.convert = Convert(2)
-        self.p = self.convert.str_to_bin(self.p_str)
         self.lab1 = Lab1(self.convert, 2)
 
     def add(self,a_str,b_str):
@@ -58,10 +53,7 @@ class Lab4:
         a = self.convert.str_to_bin(a_str)
         b = self.convert.str_to_bin(b_str)
         time_start = time.time()
-        c = self.mul_long(a,b,2)
-        d = self.div_long(c, self.p)[1]
-        while(len(d) > self.m):
-            del d[0]
+        d = self.mul_long(a,b)
         time_end = time.time()
         print("Time: " + str(time_end - time_start))
         d_str = self.convert.bin_to_str(d)
@@ -81,61 +73,93 @@ class Lab4:
         del a[len(a) - 1]
         return a
 
+    def createMatrix(self,a):
+        m = len(a)
+        p = 2 * m + 1
+        matrix = []
+        for i in range(m):
+            matrix.append([])
+            for j in range(m):
+                if ((2 ** i) + (2 ** j)) % p == 1 or ((2 ** i) - (2 ** j)) % p == 1 or (-(2 ** i) + (2 ** j)) % p == 1 or (-(2 ** i) - (2 ** j)) % p == 1:
+                    matrix[i].append(1)
+                else:
+                    matrix[i].append(0)
+        return matrix
+
     def power(self,a_str,n_str):
         n = self.convert.str_to_bin(n_str)
         a = self.convert.str_to_bin(a_str)
         time_start = time.time()
-        c = [1]
+        c = []
+        for i in range(len(a)):
+            c.append(1)
         n.reverse()
         for i in range(len(n)):
             if n[i] == 1:
-                c = self.mul_long(c.copy(),a.copy(),2)
-                c = self.div_long(c.copy(), self.p)[1]
+                c = self.mul_long(c.copy(),a.copy())
             a = self.sqr_long(a.copy())
-            a = self.div_long(a.copy(), self.p)[1]
         time_end = time.time()
         print("Time: " + str(time_end - time_start))
         return self.convert.bin_to_str(c)
 
+    def power_long(self,a,n):
+        c = []
+        for i in range(len(a)):
+            c.append(1)
+        n.reverse()
+        for i in range(len(n)):
+            if n[i] == 1:
+                c = self.mul_long(c.copy(),a.copy())
+            a = self.sqr_long(a.copy())
+        return c
 
-    def mul_long(self, num_b_1, num_b_2 , extent):
-        if len(num_b_2) > len(num_b_1):
-            x = num_b_1
-            num_b_1 = num_b_2
-            num_b_2 = x
-        num_b_3 = []
-        num_b_2.reverse()
-        for i in range(len(num_b_2)):
-            temp = self.lab1.mul_one_digit(num_b_1, num_b_2[i], extent)
-            temp = self.lab1.shift(temp, i)
-            num_b_3 = self.add_long(temp, num_b_3)
-        
-        return num_b_3
-    
-    def div_long(self, num_bin_1, num_bin_2):
-        k = len(num_bin_2)
-        R = num_bin_1
-        Q = []
-        while self.lab1.cmp_long(R,num_bin_2):
-            t = len(R)
-            C = self.lab1.shift(num_bin_2, t-k)
-            R = self.add_long(R, C)
-            Q = self.lab1.insert(Q, t-k)
-            while(len(R) != 0):
-                if R[0] == 0:
-                    del R[0]
-                else:
-                    break
-        return [Q,R]
+    def mul_long(self, a, b):
+        matrix = self.createMatrix(a)
+        d = []
+        for k in range(len(a)):
+            c = []
+            for i in range(len(a)):
+                sum = 0
+                for j in range(len(a)):
+                    sum += a[j] * matrix[j][i]
+                c.append(sum % 2)
+            sum = 0
+            for i in range(len(c)):
+                sum += c[i]*b[i]
+            d.append(sum % 2)
+            x = a[0]
+            del a[0]
+            a.append(x)
+            y = b[0]
+            del b[0]
+            b.append(y)
+        return d
+     
     
     def inverted(self,a_str):
         a = self.convert.str_to_bin(a_str)
         m = len(a)
-        n = 2 ** m - 2
+        # n = m - 1
+        n = 2**m - 2
         n_bin = self.convert.dec_to_bin(n)
-        n_str = self.convert.bin_to_str(n_bin)
-        pw = self.power(a_str,n_str)
-        return pw
+        pw = self.power_long(a,n_bin)
+        # k = 1
+        # b = a.copy()
+        # for i in range(len(n_bin)):
+        #     if i == 0:
+        #         continue
+        #     c = self.sqr_long(b.copy())
+        #     c = self.power_long(b.copy(),self.convert.dec_to_bin(2*k))
+        #     # print(k)
+        #     b = self.mul_long(c.copy(),b.copy())
+        #     k *= 2
+        #     if n_bin[i] == 1:
+        #         b = self.sqr_long(b.copy())
+        #         b = self.mul_long(b.copy(),a.copy())
+        #         k += 1
+        # b = self.sqr_long(b.copy())
+        # return self.convert.bin_to_str(b)
+        return self.convert.bin_to_str(pw)
 
     def trace(self,a_str):
         a = self.convert.str_to_bin(a_str)
@@ -155,10 +179,10 @@ class Lab4:
         c = self.convert.str_to_bin(c_str)
 
         aplusb = self.add_long(a.copy(),b.copy())
-        abc = self.mul_long(aplusb,c.copy(),2)
+        abc = self.mul_long(aplusb,c.copy())
 
-        ac = self.mul_long(a.copy(),c.copy(),2)
-        bc = self.mul_long(b.copy(),c.copy(),2)
+        ac = self.mul_long(a.copy(),c.copy())
+        bc = self.mul_long(b.copy(),c.copy())
         abc2 = self.add_long(ac,bc)
 
         if(abc == abc2):
@@ -182,20 +206,20 @@ def main():
     n = input("N:\n")
     print("A + B:")
     print(lab4.add(a,b))
-    # print("A * B:")
-    # print(lab3.mul(a,b))
+    print("A * B:")
+    print(lab4.mul(a,b))
     print("A ^ 2:")
     print(lab4.sqr(a))
-    # print("A ^ (-1):")
-    # print(lab4.inverted(a))
-    # print("A ^ N:")
-    # print(lab3.power(a,n))
+    print("A ^ (-1):")
+    print(lab4.inverted(a))
+    print("A ^ N:")
+    print(lab4.power(a,n))
     print("Trace A:")
     print(lab4.trace(a))
-    # print("Test 1:")
-    # print(lab3.test1(a,b,n))
-    # print("Test 2:")
-    # print(lab3.test2(a))
+    print("Test 1:")
+    print(lab4.test1(a,b,n))
+    print("Test 2:")
+    print(lab4.test2(a))
 
 if __name__ == '__main__':
     main()
