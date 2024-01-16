@@ -1,2 +1,2 @@
 # Vladyka FI83 
-SROM
+Special sections of computational mathematics
